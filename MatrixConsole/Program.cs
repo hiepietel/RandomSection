@@ -7,10 +7,11 @@ using System.Threading.Tasks;
 
 namespace MatrixConsole
 {
+     
     class Program
     {
         DateTime dateTime = new DateTime();
-        static string charDatabase = "01";
+        static string charDatabase = "1";
         static string OneChar()
         {
             Random rnd = new Random();
@@ -25,36 +26,55 @@ namespace MatrixConsole
             //int windowHeight = Console./2;
             //Console.SetWindowSize(windowWidth, windowHeight);
             //THREAD
-            int i = 0;
+            //for (int i = 0; i <10; i++)
             while (true)
             {
-                i++;
-
-                Random rnd = new Random();
-                int posX = rnd.Next(0, Console.WindowWidth);
-                int posY = rnd.Next(0, Console.WindowHeight) / 4;
-                int temp = -2;
-                Console.SetCursorPosition(posX, 0);
-                for (int j = 0; j < rnd.Next(5,50); j++)
-                {
-                    
-                    Console.SetCursorPosition(posX, j+posY);
-                    Console.ForegroundColor = j <5 ? ConsoleColor.Green : ConsoleColor.DarkYellow;
-                    Console.ForegroundColor = j >10 ? ConsoleColor.Yellow : ConsoleColor.Green;
-                    Console.Write(OneChar());
-                }
-                //Console.ForegroundColor = ConsoleColor.Green;
-                //Thread thread = new Thread();
-                //thread.Start()
-                //Console.SetCursorPosition(posX, posY);
-                //Console.Write("1");
+                Thread t = new Thread(new ThreadStart(ThreadLine));
+                t.Start();
+                Thread.Sleep(300 );
             }
-
 
             Console.ReadKey();
         }
-        static void asss(){
-            
+        static void ThreadLine(){
+
+            Random rnd = new Random();
+
+            int posX = rnd.Next(0, Console.WindowWidth);
+            int posY = (rnd.Next(0, Console.WindowHeight) /8)-1;
+
+            string head = OneChar();
+
+            int height = rnd.Next(5, 45);
+
+            int timeToClean = rnd.Next(4500, 5500);
+
+            for (int j = 2; j < height; j++)
+            {
+               if (j + posY > Console.WindowHeight || posX > Console.WindowWidth) 
+                    break;
+                Console.SetCursorPosition(posX, j + posY - 1);
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.Write(OneChar());
+                
+                Thread.Sleep(1);
+                
+                Console.SetCursorPosition(posX, j + posY);
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.Write(head);
+
+                Thread.Sleep(50);
+            }
+            Thread.Sleep(timeToClean);
+            for(int i = 0; i< height; i++)
+            {
+                if (i + posY > Console.WindowHeight || posX > Console.WindowWidth) break;
+
+                Console.SetCursorPosition(posX, i + posY+1);
+                Console.Write(" ");
+
+                Thread.Sleep(50);
+            }
         }
 
     }
