@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.29519.87
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MatrixConsole", "MatrixConsole\MatrixConsole.csproj", "{6BE1955B-44E3-4E93-906E-C70CAEE4625F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RandomGenerator", "RndFileDataGenerator\RandomGenerator.csproj", "{66ED9934-45DC-4EF9-9B5C-23D149A754DB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RandomGenerator", "RandomGenerator\RandomGenerator.csproj", "{66ED9934-45DC-4EF9-9B5C-23D149A754DB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
