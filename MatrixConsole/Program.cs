@@ -1,17 +1,33 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace MatrixConsole
 {
-     
+
     class Program
     {
+        [DllImport("kernel32.dll", ExactSpelling = true)]
+
+        private static extern IntPtr GetConsoleWindow();
+        private static IntPtr ThisConsole = GetConsoleWindow();
+
+        [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
+
+        private static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
+        private const int HIDE = 0;
+        private const int MAXIMIZE = 3;
+        private const int MINIMIZE = 6;
+        private const int RESTORE = 9;
+
+
+
         DateTime startTime = new DateTime();
-        static string charDatabase = "1";
+        static string charDatabase = "0123456789";
         static string OneChar()
         {
             Random rnd = new Random();
@@ -21,6 +37,9 @@ namespace MatrixConsole
         static void Main(string[] args)
         {
             Console.SetWindowPosition(0, 0);
+            Console.SetWindowSize(Console.LargestWindowWidth, Console.LargestWindowHeight);
+            ShowWindow(ThisConsole, MAXIMIZE);
+            //ShowWindow(ThisConsole, MAXIMIZE)
             int windowWidth = Console.WindowWidth;
             int windowHeight = Console.WindowHeight;
 
@@ -31,19 +50,30 @@ namespace MatrixConsole
             {
                 Thread t = new Thread(new ThreadStart(ThreadLine));
                 t.Start();
-                Thread.Sleep(100);
+                Thread.Sleep(50);
                 i++;
-                if(i> 100) { 
+                if (i > 100)
+                {
+
+                }
+                if (i == 250) {
                     Thread.Sleep(100);
-                    Thread cc = new Thread(new ThreadStart(CleanConsole));
+                    Console.ForegroundColor = ConsoleColor.Magenta;
+                    Thread cc = new Thread(new ThreadStart(() => CleanConsole(OneChar())));
+                    cc.Start();
+                }
+                if (i > 300)
+                {
+                    Thread.Sleep(100);
+                    Thread cc = new Thread(new ThreadStart(() => CleanConsole(" ")));
                     cc.Start();
                     i = 0;
                 }
             }
-
+        
             Console.ReadKey();
         }
-        static void CleanConsole()
+        static void CleanConsole(string sign)
         {
             int width = Console.WindowWidth;
             int height = Console.WindowHeight;
@@ -52,7 +82,7 @@ namespace MatrixConsole
                 for(int j =0; j< height; j++)
                 {
                     Console.SetCursorPosition(i, j);
-                    Console.WriteLine("   ");
+                    Console.WriteLine(sign + sign + sign);
                 }
             }
         }
@@ -67,7 +97,7 @@ namespace MatrixConsole
 
             int height = rnd.Next(5, 45);
 
-            int timeToClean = rnd.Next(1500, 2500);
+            int timeToClean = rnd.Next(3500, 4500);
 
             for (int j = 2; j < height; j++)
             {
@@ -92,7 +122,7 @@ namespace MatrixConsole
                 if (i + posY > Console.WindowHeight || posX > Console.WindowWidth || posX -3 < 0) break;
 
                 Console.SetCursorPosition(posX-2 , i + posY+1);
-                Console.Write("       ");
+                Console.Write("     ");
 
                 Thread.Sleep(50);
             }
